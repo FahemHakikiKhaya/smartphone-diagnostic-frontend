@@ -3,6 +3,7 @@
 import useTypingEffect from "@/hooks/useTypingEffect";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const gridBackground = {
   backgroundImage:
@@ -66,9 +67,11 @@ export default function HomePage() {
             exact issue with your phone.
           </Typography>
           <Stack direction="row" spacing={{ md: 2 }}>
-            <Button variant="contained" color="primary" size="large">
-              Get Started
-            </Button>
+            <Link href="/diagnose">
+              <Button variant="contained" color="primary" size="large">
+                Get Started
+              </Button>
+            </Link>
             <Button variant="outlined" color="primary" size="large">
               About Us
             </Button>
