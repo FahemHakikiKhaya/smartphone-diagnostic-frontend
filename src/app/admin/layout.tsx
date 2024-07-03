@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/features/admin/components/sidebar";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useState } from "react";
 
 export default function RootLayout({
@@ -9,7 +9,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [openNav, setOpenNav] = useState<boolean>(false);
+  const [openNav, setOpenNav] = useState<boolean>(true);
 
   return (
     <Box
@@ -28,16 +28,9 @@ export default function RootLayout({
           minHeight: 1,
           display: "flex",
           flexDirection: "column",
-          //   py: `${HEADER.H_MOBILE + SPACING}px`,
-          //   ...(lgUp && {
-          //     px: 2,
-          //     py: `${HEADER.H_DESKTOP + SPACING}px`,
-          //     width: `calc(100% - ${NAV.WIDTH}px)`,
-          //   }),
-          //   ...sx,
         }}
       >
-        {children}
+        <Container sx={{ pt: 3 }}>{children}</Container>
       </Box>
     </Box>
   );

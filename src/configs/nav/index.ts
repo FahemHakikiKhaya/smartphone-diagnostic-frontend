@@ -1,33 +1,18 @@
 const items = [
   {
-    title: "dashboard",
-    path: "/",
-    // icon: icon("ic_analytics"),
-  },
-  {
-    title: "user",
-    path: "/user",
+    title: "diagnose",
+    path: "/admin/diagnose",
     // // icon: icon("ic_user"),
   },
   {
-    title: "product",
-    path: "/products",
+    title: "symptom",
+    path: "/admin/symptom",
     // // icon: icon("ic_cart"),
   },
   {
-    title: "blog",
-    path: "/blog",
+    title: "diagnose_symptom",
+    path: "/admin/diagnose-symptom",
     // // icon: icon("ic_blog"),
-  },
-  {
-    title: "login",
-    path: "/login",
-    // // icon: icon("ic_lock"),
-  },
-  {
-    title: "Not found",
-    path: "/404",
-    // icon: icon("ic_disabled"),
   },
 ];
 

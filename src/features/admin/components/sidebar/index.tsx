@@ -30,7 +30,6 @@ export default function Sidebar({ openNav, onCloseNav }: NavProps) {
   const upLg = useMediaQuery(({ breakpoints }: { breakpoints: Breakpoints }) =>
     breakpoints.up("lg")
   );
-
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -86,6 +85,8 @@ export default function Sidebar({ openNav, onCloseNav }: NavProps) {
     </Scrollbar>
   );
 
+  console.log({ upLg });
+
   return (
     <Box
       sx={{
@@ -93,18 +94,18 @@ export default function Sidebar({ openNav, onCloseNav }: NavProps) {
         width: { lg: navConfig.layout.width },
       }}
     >
-      {upLg ? (
-        <Box
-          sx={{
-            height: 1,
-            position: "fixed",
-            width: navConfig.layout.width,
-            borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
-          }}
-        >
-          {renderContent}
-        </Box>
-      ) : (
+      {/* {upLg ? ( */}
+      <Box
+        sx={{
+          height: 1,
+          position: "fixed",
+          width: navConfig.layout.width,
+          borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
+        }}
+      >
+        {renderContent}
+      </Box>
+      {/* ) : (
         <Drawer
           open={openNav}
           onClose={onCloseNav}
@@ -116,7 +117,7 @@ export default function Sidebar({ openNav, onCloseNav }: NavProps) {
         >
           {renderContent}
         </Drawer>
-      )}
+      )} */}
     </Box>
   );
 }

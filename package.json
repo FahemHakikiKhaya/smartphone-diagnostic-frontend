@@ -12,13 +12,20 @@
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.21",
+    "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.20",
     "@mui/material-nextjs": "^5.15.11",
+    "@tanstack/react-query": "^5.49.2",
+    "axios": "^1.7.2",
+    "formik": "^2.4.6",
     "framer-motion": "^11.2.12",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
-    "simplebar-react": "^3.2.6"
+    "react-toastify": "^10.0.5",
+    "simplebar-react": "^3.2.6",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",

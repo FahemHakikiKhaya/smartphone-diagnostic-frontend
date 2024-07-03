@@ -3,6 +3,8 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { ThemeProvider } from "@mui/material";
 import theme from "@/theme";
 import CssBaseline from "@mui/material/CssBaseline";
+import ReactQueryProvider from "@/provider/ReactQueryProvider";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,8 +21,11 @@ export default function RootLayout({
       <body>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {children}
+            <ReactQueryProvider>
+              <ToastContainer />
+              <CssBaseline />
+              {children}
+            </ReactQueryProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
