@@ -5,6 +5,7 @@ import theme from "@/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { ToastContainer } from "react-toastify";
+import { NotistackProvider } from "@/provider/NotiStackProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,12 +20,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <ToastContainer />
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <ReactQueryProvider>
-              <ToastContainer />
-              <CssBaseline />
-              {children}
+              <NotistackProvider
+                anchorOrigin={{ horizontal: "right", vertical: "top" }}
+              >
+                <CssBaseline />
+
+                {children}
+              </NotistackProvider>
             </ReactQueryProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>

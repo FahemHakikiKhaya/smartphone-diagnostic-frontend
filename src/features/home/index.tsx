@@ -4,6 +4,7 @@ import useTypingEffect from "@/hooks/useTypingEffect";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const gridBackground = {
   backgroundImage:
@@ -72,7 +73,12 @@ export default function HomePage() {
                 Get Started
               </Button>
             </Link>
-            <Button variant="outlined" color="primary" size="large">
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              onClick={() => toast.success("test")}
+            >
               About Us
             </Button>
           </Stack>

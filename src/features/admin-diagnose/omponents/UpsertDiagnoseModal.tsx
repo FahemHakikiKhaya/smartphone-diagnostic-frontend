@@ -1,4 +1,11 @@
-import { useCreateDiagnoseMutation } from "@/features/diagnose/api/useCreateDiagnoseMutation";
+"use client";
+
+import {
+  useCreateDiagnoseMutation,
+  useUpsertDiagnoseMutation,
+} from "@/features/diagnose/api/useUpsertDiagnoseMutation";
+import { getDiagnosesQuerykey } from "@/features/diagnose/api/useGetDiagnosesQuery";
+import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Dialog,
@@ -8,36 +15,65 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { Formik } from "formik";
-import { FC } from "react";
-import { toast } from "react-toastify";
+import { useSnackbar } from "notistack";
+import { FC, useMemo } from "react";
 import * as Yup from "yup";
+import { Diagnose } from "@/features/diagnose/types";
 
 interface UpsertDiagnoseModalProps {
   opened: boolean;
   onClose: () => void;
   type: "Create" | "Update";
+  initialValues?: Diagnose;
 }
 
 const UpsertDiagnoseModal: FC<UpsertDiagnoseModalProps> = ({
   opened,
   onClose,
   type = "Create",
+  initialValues,
 }) => {
-  const { mutate: createDiagnose } = useCreateDiagnoseMutation({
-    onSuccess: () => toast.success("Diagnose Successfuly Created"),
+  const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
+  const { mutateAsync: upsertDiagnose } = useUpsertDiagnoseMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [getDiagnosesQuerykey] });
+      enqueueSnackbar({
+        message: "Success: Diagnose successfully created.",
+        variant: "success",
+      });
+    },
   });
+
   return (
     <Formik
-      initialValues={{ name: "", solution: "" }}
+      enableReinitialize
+      initialValues={{
+        code: initialValues?.code || "",
+        name: initialValues?.name || "",
+        solution: initialValues?.solution || "",
+      }}
       validationSchema={Yup.object({
         name: Yup.string().required(),
         solution: Yup.string().required(),
       })}
-      onSubmit={(values) => createDiagnose(values)}
+      onSubmit={async (values, { resetForm }) => {
+        await upsertDiagnose(values);
+        onClose();
+        resetForm();
+      }}
     >
-      {({ errors, getFieldProps, touched, handleSubmit }) => (
-        <Dialog open={opened} onClose={onClose} maxWidth="sm" fullWidth>
+      {({ errors, getFieldProps, touched, handleSubmit, isSubmitting }) => (
+        <Dialog
+          open={opened}
+          onClose={() => {
+            onClose();
+          }}
+          maxWidth="sm"
+          fullWidth
+        >
           <DialogTitle>{type} Diagnose</DialogTitle>
           <DialogContent>
             <Stack spacing={2} mt={1}>
@@ -59,7 +95,12 @@ const UpsertDiagnoseModal: FC<UpsertDiagnoseModalProps> = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={() => handleSubmit()}>{type}</Button>
+            <LoadingButton
+              onClick={() => handleSubmit()}
+              loading={isSubmitting}
+            >
+              {type}
+            </LoadingButton>
           </DialogActions>{" "}
         </Dialog>
       )}

@@ -3,16 +3,17 @@ import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { Diagnose } from "../types";
 
 interface CreateDiagnoseArgs {
+  code?: string;
   name: string;
   solution: string;
 }
 
-export const useCreateDiagnoseMutation = (
+export const useUpsertDiagnoseMutation = (
   options?: UseMutationOptions<Diagnose, unknown, CreateDiagnoseArgs>
 ) => {
   return useMutation({
     mutationFn: async (payload: CreateDiagnoseArgs) => {
-      const response = await axiosInstance.post<Diagnose>("diagnose", payload);
+      const response = await axiosInstance.put<Diagnose>("diagnoses", payload);
       return response.data;
     },
     ...options,

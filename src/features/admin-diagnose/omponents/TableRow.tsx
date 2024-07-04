@@ -1,8 +1,5 @@
-import { useState, MouseEvent, useMemo } from "react";
-import PropTypes from "prop-types";
+import { useState, MouseEvent } from "react";
 
-import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
 import Popover from "@mui/material/Popover";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
@@ -10,17 +7,30 @@ import MenuItem from "@mui/material/MenuItem";
 import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import { Diagnose } from "@/features/diagnose/types";
+import { Delete, Edit, MoreVert } from "@mui/icons-material";
 
-// import Label from "src/components/label";
-// import Iconify from "src/components/iconify";
-
-// ----------------------------------------------------------------------
-
-interface UserTableRowProps {
-  handleClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+interface DiagnoseTableRowProps {
+  diagnose: Diagnose;
+  handleClick: (code: string) => void;
+  selected: boolean;
+  setUpsertModal: ({
+    opened,
+    selectedId,
+  }: {
+    opened: boolean;
+    selectedId: number;
+  }) => void;
+  deleteDiagnoses: (ids: number[]) => void;
 }
 
-const UserTableRow: React.FC<UserTableRowProps> = ({ handleClick }) => {
+const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
+  handleClick,
+  diagnose,
+  selected,
+  setUpsertModal,
+  deleteDiagnoses,
+}) => {
   const [open, setOpen] = useState<HTMLElement | null>(null);
 
   const handleOpenMenu = (event: MouseEvent<HTMLElement>) => {
@@ -31,50 +41,38 @@ const UserTableRow: React.FC<UserTableRowProps> = ({ handleClick }) => {
     setOpen(null);
   };
 
-  const { selected, name, avatarUrl, company, role, isVerified, status } =
-    useMemo(() => {
-      return {
-        selected: "test",
-        name: "test",
-        avatarUrl: "test",
-        company: "test",
-        role: "test",
-        isVerified: "test",
-        status: "test",
-      };
-    }, []);
+  const { id, code, name, solution } = diagnose || {};
 
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
         <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
+          <Checkbox
+            disableRipple
+            checked={selected}
+            onChange={() => handleClick(code)}
+          />
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <Typography variant="subtitle2" noWrap>
+            {code}
+          </Typography>
         </TableCell>
 
-        <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar alt={name} src={avatarUrl} />
-            <Typography variant="subtitle2" noWrap>
-              {name}
-            </Typography>
-          </Stack>
+        <TableCell component="th" scope="row">
+          <Typography variant="subtitle2" noWrap>
+            {name}
+          </Typography>
         </TableCell>
-
-        <TableCell>{company}</TableCell>
-
-        <TableCell>{role}</TableCell>
-
-        <TableCell align="center">{isVerified ? "Yes" : "No"}</TableCell>
-
-        <TableCell>
-          {/* <Label color={(status === "banned" && "error") || "success"}>
-            {status}
-          </Label> */}
+        <TableCell component="th" scope="row">
+          <Typography variant="subtitle2" noWrap>
+            {solution}
+          </Typography>
         </TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
-            {/* <Iconify icon="eva:more-vertical-fill" /> */}
+            <MoreVert />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -89,13 +87,25 @@ const UserTableRow: React.FC<UserTableRowProps> = ({ handleClick }) => {
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
-          {/* <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} /> */}
+        <MenuItem
+          onClick={() => {
+            setUpsertModal({ opened: true, selectedId: id });
+            handleCloseMenu();
+          }}
+          sx={{ py: 1 }}
+        >
+          <Edit sx={{ mr: 1 }} />
           Edit
         </MenuItem>
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: "error.main" }}>
-          {/* <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} /> */}
+        <MenuItem
+          onClick={() => {
+            deleteDiagnoses([id]);
+            handleCloseMenu();
+          }}
+          sx={{ color: "error.main", py: 1 }}
+        >
+          <Delete sx={{ mr: 1 }} />
           Delete
         </MenuItem>
       </Popover>
@@ -103,4 +113,4 @@ const UserTableRow: React.FC<UserTableRowProps> = ({ handleClick }) => {
   );
 };
 
-export default UserTableRow;
+export default DiagnoseTableRow;
