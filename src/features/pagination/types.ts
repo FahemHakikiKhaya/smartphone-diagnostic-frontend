@@ -4,8 +4,8 @@ export enum SortOrder {
 }
 
 export type PaginationQueries = {
-  take: number;
-  page: number;
+  take?: number;
+  page?: number;
   sortBy?: string;
   sortOrder?: SortOrder;
 };

@@ -10,7 +10,7 @@ type GetDiagnosesQueries = {
   search?: string;
 } & PaginationQueries;
 
-export const getDiagnosesQuerykey = "get-diagnose";
+export const getDiagnosesQuerykey = "get-diagnoses";
 
 const useGetDiagnosesQuery = (
   queries: GetDiagnosesQueries,
@@ -22,7 +22,7 @@ const useGetDiagnosesQuery = (
   >
 ) => {
   return useQuery({
-    queryKey: ["get-diagnose", queries],
+    queryKey: [getDiagnosesQuerykey, queries],
     queryFn: async () => {
       const response = await axiosInstance.get<PaginationResponse<Diagnose>>(
         "diagnoses",

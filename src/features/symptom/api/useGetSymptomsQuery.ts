@@ -8,12 +8,13 @@ import { Symptom } from "../type";
 
 type GetSymptomsQueries = {
   search?: string;
+  all?: boolean;
 } & PaginationQueries;
 
 export const getSymptomsQuerykey = "get-symptoms";
 
 const useGetSymptomsQuery = (
-  queries: GetSymptomsQueries,
+  queries?: GetSymptomsQueries,
   options?: UseQueryOptions<
     unknown,
     unknown,

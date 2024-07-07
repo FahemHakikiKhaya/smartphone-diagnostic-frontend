@@ -7,34 +7,31 @@ import MenuItem from "@mui/material/MenuItem";
 import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { Diagnose } from "@/features/diagnose/types";
 import { Delete, Edit, MoreVert } from "@mui/icons-material";
-import { useRouter } from "next/navigation";
+import { DiagnoseSymptom } from "@/features/diagnose-symptom/type";
 
-interface DiagnoseTableRowProps {
-  diagnose: Diagnose;
+interface DiagnoseSymptomsTableRowProps {
+  diagnoseSymptom: DiagnoseSymptom;
   handleClick: (id: number) => void;
   selected: boolean;
-  setUpsertModal: ({
+  setCreateModal: ({
     opened,
     selectedId,
   }: {
     opened: boolean;
     selectedId: number;
   }) => void;
-  deleteDiagnoses: (ids: number[]) => void;
+  deleteDiagnoseSymptoms: (ids: number[]) => void;
 }
 
-const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
+const DiagnoseSymptomsTableRow: React.FC<DiagnoseSymptomsTableRowProps> = ({
   handleClick,
-  diagnose,
+  diagnoseSymptom,
   selected,
-  setUpsertModal,
-  deleteDiagnoses,
+  setCreateModal,
+  deleteDiagnoseSymptoms,
 }) => {
   const [open, setOpen] = useState<HTMLElement | null>(null);
-
-  const router = useRouter();
 
   const handleOpenMenu = (event: MouseEvent<HTMLElement>) => {
     setOpen(event.currentTarget);
@@ -44,7 +41,7 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
     setOpen(null);
   };
 
-  const { id, code, name, solution } = diagnose || {};
+  const { id, symptom } = diagnoseSymptom || {};
 
   return (
     <>
@@ -57,14 +54,14 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
           />
         </TableCell>
         <TableCell component="th" scope="row">
-          <Typography variant="subtitle2">{code}</Typography>
+          <Typography variant="subtitle2">{symptom?.code}</Typography>
         </TableCell>
 
         <TableCell component="th" scope="row">
-          <Typography variant="subtitle2">{name}</Typography>
+          <Typography variant="subtitle2">{symptom?.name}</Typography>
         </TableCell>
         <TableCell component="th" scope="row">
-          <Typography variant="subtitle2">{solution}</Typography>
+          <Typography variant="subtitle2">{symptom?.question}</Typography>
         </TableCell>
 
         <TableCell align="right">
@@ -94,20 +91,10 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
           <Edit sx={{ mr: 1 }} />
           Edit
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            router.push(`/admin/diagnose/${id}`);
-            handleCloseMenu();
-          }}
-          sx={{ py: 1 }}
-        >
-          <Edit sx={{ mr: 1 }} />
-          Symptomss
-        </MenuItem>
 
         <MenuItem
           onClick={() => {
-            deleteDiagnoses([id]);
+            deleteDiagnoseSymptoms([id]);
             handleCloseMenu();
           }}
           sx={{ color: "error.main", py: 1 }}
@@ -120,4 +107,4 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
   );
 };
 
-export default DiagnoseTableRow;
+export default DiagnoseSymptomsTableRow;
