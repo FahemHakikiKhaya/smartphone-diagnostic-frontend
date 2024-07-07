@@ -10,14 +10,14 @@ import { Search, Delete } from "@mui/icons-material";
 
 // ----------------------------------------------------------------------
 
-interface DiagnoseTableToolbarProps {
+interface SymptomTableToolbarProps {
   selectedIds: number[];
   searchFilter: string;
   onSearchFilter: (value: string) => void;
   onDelete: (ids: number[]) => void;
 }
 
-const DiagnoseTableToolbar: React.FC<DiagnoseTableToolbarProps> = ({
+const SymptomTableToolbar: React.FC<SymptomTableToolbarProps> = ({
   selectedIds,
   searchFilter,
   onSearchFilter,
@@ -45,7 +45,7 @@ const DiagnoseTableToolbar: React.FC<DiagnoseTableToolbarProps> = ({
         <OutlinedInput
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
-          placeholder="Search diagnose..."
+          placeholder="Search symptom..."
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               onSearchFilter(searchInput);
@@ -70,4 +70,4 @@ const DiagnoseTableToolbar: React.FC<DiagnoseTableToolbarProps> = ({
   );
 };
 
-export default DiagnoseTableToolbar;
+export default SymptomTableToolbar;

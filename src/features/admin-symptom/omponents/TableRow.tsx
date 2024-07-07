@@ -7,11 +7,11 @@ import MenuItem from "@mui/material/MenuItem";
 import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { Diagnose } from "@/features/diagnose/types";
 import { Delete, Edit, MoreVert } from "@mui/icons-material";
+import { Symptom } from "@/features/symptom/type";
 
-interface DiagnoseTableRowProps {
-  diagnose: Diagnose;
+interface SymptomTableRowProps {
+  symptom: Symptom;
   handleClick: (id: number) => void;
   selected: boolean;
   setUpsertModal: ({
@@ -21,15 +21,15 @@ interface DiagnoseTableRowProps {
     opened: boolean;
     selectedId: number;
   }) => void;
-  deleteDiagnoses: (ids: number[]) => void;
+  deleteSymptoms: (ids: number[]) => void;
 }
 
-const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
+const SymptomTableRow: React.FC<SymptomTableRowProps> = ({
   handleClick,
-  diagnose,
+  symptom,
   selected,
   setUpsertModal,
-  deleteDiagnoses,
+  deleteSymptoms,
 }) => {
   const [open, setOpen] = useState<HTMLElement | null>(null);
 
@@ -41,7 +41,7 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
     setOpen(null);
   };
 
-  const { id, code, name, solution } = diagnose || {};
+  const { id, code, name, question } = symptom || {};
 
   return (
     <>
@@ -61,7 +61,7 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
           <Typography variant="subtitle2">{name}</Typography>
         </TableCell>
         <TableCell component="th" scope="row">
-          <Typography variant="subtitle2">{solution}</Typography>
+          <Typography variant="subtitle2">{question}</Typography>
         </TableCell>
 
         <TableCell align="right">
@@ -94,7 +94,7 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
 
         <MenuItem
           onClick={() => {
-            deleteDiagnoses([id]);
+            deleteSymptoms([id]);
             handleCloseMenu();
           }}
           sx={{ color: "error.main", py: 1 }}
@@ -107,4 +107,4 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
   );
 };
 
-export default DiagnoseTableRow;
+export default SymptomTableRow;

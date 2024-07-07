@@ -1,21 +1,21 @@
 import { TableRow, Checkbox, TableCell, TableHead } from "@mui/material";
 
 interface HeadLabel {
-  id: number;
+  id: string;
   label: string;
   align?: "left" | "right" | "center";
   width?: number | string;
   minWidth?: number | string;
 }
 
-interface DiagnoseTableHeadProps {
+interface SymptomTableHeadProps {
   rowCount: number;
   headLabel: HeadLabel[];
   numSelected: number;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const DiagnoseTableHead: React.FC<DiagnoseTableHeadProps> = ({
+const SymptomTableHead: React.FC<SymptomTableHeadProps> = ({
   rowCount,
   headLabel,
   numSelected,
@@ -42,4 +42,4 @@ const DiagnoseTableHead: React.FC<DiagnoseTableHeadProps> = ({
   );
 };
 
-export default DiagnoseTableHead;
+export default SymptomTableHead;

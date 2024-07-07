@@ -12,18 +12,19 @@ import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 
 import { Add } from "@mui/icons-material";
-import UpsertDiagnoseModal from "./omponents/UpsertDiagnoseModal";
-import useGetDiagnosesQuery, {
-  getDiagnosesQuerykey,
-} from "../diagnose/api/useGetDiagnosesQuery";
-import DiagnoseTableHead from "./omponents/TableHead";
-import DiagnoseTableRow from "./omponents/TableRow";
-import DiagnoseTableToolbar from "./omponents/TableToolbar";
-import { useDeleteDiagnosesMutation } from "../diagnose/api/useDeleteDiagnosesMutation";
+
 import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
+import { useDeleteSymptomsMutation } from "../symptom/api/useDeleteSymptomsMutation";
+import useGetSymptomsQuery, {
+  getSymptomsQuerykey,
+} from "../symptom/api/useGetSymptomsQuery";
+import SymptomTableHead from "./omponents/TableHead";
+import SymptomTableRow from "./omponents/TableRow";
+import SymptomTableToolbar from "./omponents/TableToolbar";
+import UpsertSymptomModal from "./omponents/UpsertSymptomModal";
 
-export default function AdminDiagnosePage() {
+export default function AdminSymptomPage() {
   const [page, setPage] = useState<number>(1);
 
   const [selected, setSelected] = useState<number[] | undefined>([]);
@@ -41,18 +42,18 @@ export default function AdminDiagnosePage() {
 
   const queryClient = useQueryClient();
 
-  const { data } = useGetDiagnosesQuery({
+  const { data } = useGetSymptomsQuery({
     search: searchFilter,
     page,
     take: rowsPerPage,
   });
 
-  const { mutate: deleteDiagnoses } = useDeleteDiagnosesMutation({
+  const { mutate: deleteSymptoms } = useDeleteSymptomsMutation({
     onSuccess: () => {
       setPage(1);
-      queryClient.invalidateQueries({ queryKey: [getDiagnosesQuerykey] });
+      queryClient.invalidateQueries({ queryKey: [getSymptomsQuerykey] });
       enqueueSnackbar({
-        message: "Success: Diagnose successfuly deleted",
+        message: "Success: Symptom successfuly deleted",
         variant: "success",
       });
     },
@@ -94,12 +95,9 @@ export default function AdminDiagnosePage() {
     setSelected(newSelected);
   };
 
-  const handleDeleteDiagnoses = (ids: number[]) => {
-    console.log(ids);
-    deleteDiagnoses({ ids });
+  const handleDeleteSymptoms = (ids: number[]) => {
+    deleteSymptoms({ ids });
   };
-
-  console.log(data?.meta.total);
 
   return (
     <>
@@ -110,7 +108,7 @@ export default function AdminDiagnosePage() {
         mb={5}
       >
         <Typography variant="h5" fontWeight={700}>
-          Diagnoses
+          Symptoms
         </Typography>
 
         <Button
@@ -119,39 +117,39 @@ export default function AdminDiagnosePage() {
           startIcon={<Add />}
           onClick={() => setUpsertModal({ selectedId: 0, opened: true })}
         >
-          Add Diagnose
+          Add Symptom
         </Button>
       </Stack>
 
       <Card>
-        <DiagnoseTableToolbar
+        <SymptomTableToolbar
           selectedIds={selected || []}
           searchFilter={searchFilter}
           onSearchFilter={handleSearchFIlter}
-          onDelete={handleDeleteDiagnoses}
+          onDelete={handleDeleteSymptoms}
         />
         <TableContainer sx={{ overflow: "unset" }}>
           <Table sx={{ minWidth: 800 }}>
-            <DiagnoseTableHead
+            <SymptomTableHead
               rowCount={data?.data.length || 0}
               numSelected={selected?.length || 0}
               onSelectAllClick={handleSelectAllClick}
               headLabel={[
                 { id: "code", label: "Code" },
                 { id: "name", label: "Name" },
-                { id: "solution", label: "Solution" },
+                { id: "qestion", label: "Question" },
                 { id: "action", label: "Action", align: "right" },
               ]}
             />
             <TableBody>
               {Children.toArray(
-                data?.data.map((diagnose) => (
-                  <DiagnoseTableRow
-                    diagnose={diagnose}
-                    selected={selected?.includes(diagnose.id) || false}
+                data?.data.map((symptom) => (
+                  <SymptomTableRow
+                    symptom={symptom}
+                    selected={selected?.includes(symptom.id) || false}
                     handleClick={handleChangeSelected}
                     setUpsertModal={setUpsertModal}
-                    deleteDiagnoses={handleDeleteDiagnoses}
+                    deleteSymptoms={handleDeleteSymptoms}
                   />
                 ))
               )}
@@ -167,7 +165,7 @@ export default function AdminDiagnosePage() {
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        <UpsertDiagnoseModal
+        <UpsertSymptomModal
           initialValues={data?.data.find(
             ({ id }) => id === upsertModal.selectedId
           )}

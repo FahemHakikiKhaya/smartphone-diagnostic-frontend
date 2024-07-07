@@ -1,8 +1,6 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -10,13 +8,32 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Scrollbar from "@/components/scrollbar";
 import navConfig from "@/configs/nav";
 import { usePathname } from "next/navigation";
-import { useMediaQuery } from "@mui/material";
+import { Icon, useMediaQuery } from "@mui/material";
 import { Breakpoints } from "@mui/system";
+import { Person, Adb, Healing } from "@mui/icons-material";
 
 interface NavProps {
   openNav: boolean;
   onCloseNav: () => void;
 }
+
+const navItemList = [
+  {
+    title: "user",
+    path: "/",
+    icon: <Person />,
+  },
+  {
+    title: "diagnose",
+    path: "/admin/diagnose",
+    icon: <Adb />,
+  },
+  {
+    title: "symptom",
+    path: "/admin/symptom",
+    icon: <Healing />,
+  },
+];
 
 const account = {
   displayName: "Fahem Khakiki Khaya",
@@ -61,7 +78,7 @@ export default function Sidebar({ openNav, onCloseNav }: NavProps) {
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.items.map((item) => (
+      {navItemList.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
     </Stack>
@@ -126,7 +143,7 @@ interface NavItemProps {
   item: {
     title: string;
     path: string;
-    // icon: React.ReactNode;
+    icon: ReactNode;
   };
 }
 
@@ -155,9 +172,9 @@ function NavItem({ item }: NavItemProps) {
         }),
       }}
     >
-      {/* <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
+      <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
         {item.icon}
-      </Box> */}
+      </Box>
       <Box component="span">{item.title}</Box>
     </ListItemButton>
   );

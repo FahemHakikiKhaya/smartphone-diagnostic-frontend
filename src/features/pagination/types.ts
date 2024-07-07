@@ -13,7 +13,7 @@ export type PaginationQueries = {
 export type PaginationMeta = {
   page: number;
   take: number;
-  totalPages: number;
+  total: number;
 };
 
 export type PaginationResponse<T> = {

@@ -1,31 +1,31 @@
 import axiosInstance from "@/utils/axios";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
-import { Diagnose } from "../types";
 import {
   PaginationQueries,
   PaginationResponse,
 } from "@/features/pagination/types";
+import { Symptom } from "../type";
 
-type GetDiagnosesQueries = {
+type GetSymptomsQueries = {
   search?: string;
 } & PaginationQueries;
 
-export const getDiagnosesQuerykey = "get-diagnose";
+export const getSymptomsQuerykey = "get-symptoms";
 
-const useGetDiagnosesQuery = (
-  queries: GetDiagnosesQueries,
+const useGetSymptomsQuery = (
+  queries: GetSymptomsQueries,
   options?: UseQueryOptions<
     unknown,
     unknown,
-    PaginationResponse<Diagnose>,
+    PaginationResponse<Symptom>,
     string[]
   >
 ) => {
   return useQuery({
-    queryKey: ["get-diagnose", queries],
+    queryKey: ["get-symptoms", queries],
     queryFn: async () => {
-      const response = await axiosInstance.get<PaginationResponse<Diagnose>>(
-        "diagnoses",
+      const response = await axiosInstance.get<PaginationResponse<Symptom>>(
+        "symptoms",
         {
           params: queries,
         }
@@ -35,4 +35,4 @@ const useGetDiagnosesQuery = (
   });
 };
 
-export default useGetDiagnosesQuery;
+export default useGetSymptomsQuery;
