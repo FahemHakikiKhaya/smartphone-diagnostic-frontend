@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import { ThemeProvider } from "@mui/material";
+import { Box, ThemeProvider } from "@mui/material";
 import theme from "@/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { ToastContainer } from "react-toastify";
 import { NotistackProvider } from "@/provider/NotiStackProvider";
+import NavigationBar from "@/components/navigation-bar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,8 +29,10 @@ export default function RootLayout({
                 anchorOrigin={{ horizontal: "right", vertical: "top" }}
               >
                 <CssBaseline />
-
-                {children}
+                <Box position="relative">
+                  <NavigationBar />
+                  {children}
+                </Box>
               </NotistackProvider>
             </ReactQueryProvider>
           </ThemeProvider>
