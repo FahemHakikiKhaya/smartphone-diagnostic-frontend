@@ -7,9 +7,13 @@ import useGetSymptomsQuery from "../symptom/api/useGetSymptomsQuery";
 import { Formik } from "formik";
 import { useCreateUserResultMutation } from "../user-result/api/useCreateUserResultMutation";
 import { Symptom } from "../symptom/type";
+import { useRouter } from "next/navigation";
+import { LoadingButton } from "@mui/lab";
+import { useAuth } from "@/provider/AuthProvider";
 
 export default function DiagnosePage() {
   const [scaleX, setScaleX] = useState<number>(0);
+  const { user } = useAuth();
 
   const {
     data: { data: questions, meta: { total: totalQuestions = 0 } = {} } = {},
@@ -19,8 +23,10 @@ export default function DiagnosePage() {
   });
 
   const { mutateAsync: createUserResult } = useCreateUserResultMutation();
+  const router = useRouter();
 
   const handlePostUserResult = async (
+    userId: number,
     answers: string[],
     questions: Symptom[]
   ) => {
@@ -31,10 +37,12 @@ export default function DiagnosePage() {
       };
     });
 
-    await createUserResult({
-      userId: 1,
+    const userResult = await createUserResult({
+      userId,
       userAnswers,
     });
+
+    router.replace(`/diagnose/result/${userResult.id}`);
   };
 
   return (
@@ -45,21 +53,27 @@ export default function DiagnosePage() {
         currentIndex: 0,
       }}
       onSubmit={async (values, { setFieldValue }) => {
-        if (values.currentIndex + 1 === totalQuestions && questions) {
-          return await handlePostUserResult(values.answers, questions);
-        }
         const newAnswers = values.answers;
         newAnswers[values.currentIndex] = values.currentAnswer;
         setFieldValue("answers", newAnswers);
-        setFieldValue("currentIndex", values.currentIndex + 1);
         setFieldValue(
           "currentAnswer",
           values.answers[values.currentIndex + 1] || ""
         );
         setScaleX(scaleX + 1 / totalQuestions);
+
+        if (values.currentIndex + 1 === totalQuestions && questions && user) {
+          return await handlePostUserResult(
+            user?.id,
+            values.answers,
+            questions
+          );
+        }
+
+        setFieldValue("currentIndex", values.currentIndex + 1);
       }}
     >
-      {({ values, setFieldValue, handleSubmit }) => (
+      {({ values, setFieldValue, handleSubmit, isSubmitting }) => (
         <Box position="relative">
           <Box
             component={motion.div}
@@ -153,15 +167,16 @@ export default function DiagnosePage() {
                         Previous
                       </Button>
                     )}
-                    <Button
+                    <LoadingButton
                       size="large"
                       color="primary"
                       variant="contained"
                       sx={{ width: "fit-content" }}
                       onClick={() => handleSubmit()}
+                      loading={isSubmitting}
                     >
                       Next
-                    </Button>
+                    </LoadingButton>
                   </Stack>
                 </Stack>
               </Stack>

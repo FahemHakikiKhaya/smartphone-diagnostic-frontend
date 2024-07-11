@@ -7,6 +7,7 @@ import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { ToastContainer } from "react-toastify";
 import { NotistackProvider } from "@/provider/NotiStackProvider";
 import NavigationBar from "@/components/navigation-bar";
+import { AuthProvider } from "@/provider/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,12 +28,15 @@ export default function RootLayout({
             <ReactQueryProvider>
               <NotistackProvider
                 anchorOrigin={{ horizontal: "right", vertical: "top" }}
+                autoHideDuration={3000}
               >
-                <CssBaseline />
-                <Box position="relative">
-                  <NavigationBar />
-                  {children}
-                </Box>
+                <AuthProvider>
+                  <CssBaseline />
+                  <Box position="relative">
+                    <NavigationBar />
+                    {children}
+                  </Box>
+                </AuthProvider>
               </NotistackProvider>
             </ReactQueryProvider>
           </ThemeProvider>

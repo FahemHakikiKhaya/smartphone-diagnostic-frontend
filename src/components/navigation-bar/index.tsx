@@ -1,15 +1,44 @@
 "use client";
 
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Container,
+  Menu,
+  MenuItem,
+  Popover,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { MouseEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/provider/AuthProvider";
+
+function stringAvatar(name: string) {
+  return {
+    sx: {
+      backgroundColor: "white",
+    },
+    children: name.split("")[0],
+  };
+}
 
 const NavigationBar = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const path = usePathname();
+  const { authenticate, user, logout } = useAuth();
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -58,10 +87,54 @@ const NavigationBar = () => {
               </Typography>
             </Stack>
           </Link>
-          <Button variant="contained" color="primary" size="medium">
-            Login
-          </Button>
+          {user ? (
+            <Avatar {...stringAvatar(user.username)} onClick={handleClick} />
+          ) : (
+            <Stack direction="row" spacing={1}>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="medium"
+                onClick={() => authenticate("Register")}
+              >
+                Register
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                size="medium"
+                onClick={() => authenticate("Login")}
+              >
+                Login
+              </Button>
+            </Stack>
+          )}
         </Stack>
+
+        <Menu
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: -10,
+            horizontal: "center",
+          }}
+        >
+          <MenuItem onClick={handleClose}>Dashboard</MenuItem>
+          <MenuItem onClick={handleClose}>Results</MenuItem>
+          <MenuItem
+            onClick={() => {
+              logout();
+              handleClose();
+            }}
+          >
+            Log Out
+          </MenuItem>
+        </Menu>
       </Container>
     </Stack>
   );

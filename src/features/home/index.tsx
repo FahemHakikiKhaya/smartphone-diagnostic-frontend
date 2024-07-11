@@ -1,9 +1,11 @@
 "use client";
 
 import useTypingEffect from "@/hooks/useTypingEffect";
+import { useAuth } from "@/provider/AuthProvider";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const gridBackground = {
@@ -17,6 +19,16 @@ const gridBackground = {
 export default function HomePage() {
   const text = "iagnose Your Smartphone Issues Effortlessly";
   const displayedText = useTypingEffect(text);
+  const { authenticate, user } = useAuth();
+  const router = useRouter();
+
+  const onClickGetStarted = () => {
+    if (user) {
+      router.push("/diagnose");
+    } else {
+      authenticate("Login");
+    }
+  };
 
   return (
     <Box sx={gridBackground}>
@@ -68,11 +80,14 @@ export default function HomePage() {
             exact issue with your phone.
           </Typography>
           <Stack direction="row" spacing={{ md: 2 }}>
-            <Link href="/diagnose">
-              <Button variant="contained" color="primary" size="large">
-                Get Started
-              </Button>
-            </Link>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={onClickGetStarted}
+            >
+              Get Started
+            </Button>
             <Button
               variant="outlined"
               color="primary"
