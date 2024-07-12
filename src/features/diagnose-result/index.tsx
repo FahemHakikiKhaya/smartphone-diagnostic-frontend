@@ -1,12 +1,21 @@
 "use client";
 
 import { ProgressCircle } from "@/components/progress-circle";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useMemo, useRef } from "react";
 import useGetUserResultQuery from "../user-result/api/useGetUserResult";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@mui/material/styles";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Code", width: 70 },
@@ -21,6 +30,8 @@ const columns: GridColDef[] = [
 const DiagnoseResultPage = ({ id }: { id: number }) => {
   const targetRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { data: result } = useGetUserResultQuery(id);
 
@@ -68,14 +79,20 @@ const DiagnoseResultPage = ({ id }: { id: number }) => {
         }}
       />
       <Container sx={{ position: "relative", pb: "200px" }}>
-        <Stack width="100%" height="100vh" justifyContent="center">
+        <Stack
+          width="100%"
+          height={{ md: "100vh", xs: "auto" }}
+          justifyContent="center"
+        >
           <Grid
             container
-            columnSpacing={10}
-            direction={{ md: "row" }}
+            columnSpacing={{ md: 10, xs: 0 }}
+            rowSpacing={{ md: 0, xs: 10 }}
+            direction={{ md: "row", xs: "column" }}
             alignItems="center"
+            pt={{ md: 0, xs: 10 }}
           >
-            <Grid item md={7}>
+            <Grid item md={7} xs={12}>
               <Typography
                 fontSize={50}
                 fontWeight="bold"
@@ -102,9 +119,7 @@ const DiagnoseResultPage = ({ id }: { id: number }) => {
                 >
                   What is Battery Issues:{" "}
                 </Typography>
-                Battery issues can range from fast draining and overheating to
-                not charging or swelling, affecting overall device performance
-                and safety
+                {result?.certainties[0].diagnose.description}
               </Typography>
               <Typography fontSize={16} mt={1}>
                 <Typography
@@ -139,10 +154,10 @@ const DiagnoseResultPage = ({ id }: { id: number }) => {
                 </Button>
               </Stack>
             </Grid>
-            <Grid item md={5}>
+            <Grid item md={5} xs={12}>
               <Stack alignItems="center">
                 <ProgressCircle
-                  percents={result?.certainties[0].certainty * 100}
+                  percents={(result?.certainties[0].certainty || 0) * 100}
                   size={300}
                   fontSize={50}
                 />
@@ -153,21 +168,14 @@ const DiagnoseResultPage = ({ id }: { id: number }) => {
             </Grid>
           </Grid>
         </Stack>
-        {/* <Stack height="400px"> */}
         <DataGrid
           ref={targetRef}
           rows={tableRows || []}
           columns={columns}
-          // initialState={{
-          //   pagination: {
-          //     paginationModel: { page: 0, pageSize: 5 },
-          //   },
-          // }}
-          // pageSizeOptions={[5, 10]}
           hideFooterPagination
           autoHeight
+          sx={{ mt: 10 }}
         />
-        {/* </Stack> */}
       </Container>
     </Box>
   );

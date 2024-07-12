@@ -8,9 +8,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Scrollbar from "@/components/scrollbar";
 import navConfig from "@/configs/nav";
 import { usePathname } from "next/navigation";
-import { Icon, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { Breakpoints } from "@mui/system";
 import { Person, Adb, Healing } from "@mui/icons-material";
+import { useAuth } from "@/provider/AuthProvider";
 
 interface NavProps {
   openNav: boolean;
@@ -43,6 +44,7 @@ const account = {
 };
 
 export default function Sidebar({ openNav, onCloseNav }: NavProps) {
+  const { user } = useAuth();
   const pathname = usePathname();
   const upLg = useMediaQuery(({ breakpoints }: { breakpoints: Breakpoints }) =>
     breakpoints.up("lg")
@@ -68,7 +70,7 @@ export default function Sidebar({ openNav, onCloseNav }: NavProps) {
     >
       <Avatar src={account.photoURL} alt="photoURL" />
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{user?.username}</Typography>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {account.role}
         </Typography>
@@ -101,8 +103,6 @@ export default function Sidebar({ openNav, onCloseNav }: NavProps) {
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   );
-
-  console.log({ upLg });
 
   return (
     <Box

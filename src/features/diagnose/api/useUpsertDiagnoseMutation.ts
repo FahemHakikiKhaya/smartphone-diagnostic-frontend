@@ -6,6 +6,7 @@ interface CreateDiagnoseArgs {
   code?: string;
   name: string;
   solution: string;
+  description: string;
 }
 
 export const useUpsertDiagnoseMutation = (

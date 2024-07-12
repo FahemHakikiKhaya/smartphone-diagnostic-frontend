@@ -8,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Diagnose } from "@/features/diagnose/types";
-import { Delete, Edit, MoreVert } from "@mui/icons-material";
+import { Delete, Edit, Healing, MoreVert } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 
 interface DiagnoseTableRowProps {
@@ -44,7 +44,7 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
     setOpen(null);
   };
 
-  const { id, code, name, solution } = diagnose || {};
+  const { id, code, name, solution, description } = diagnose || {};
 
   return (
     <>
@@ -62,6 +62,9 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
 
         <TableCell component="th" scope="row">
           <Typography variant="subtitle2">{name}</Typography>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <Typography variant="subtitle2">{description}</Typography>
         </TableCell>
         <TableCell component="th" scope="row">
           <Typography variant="subtitle2">{solution}</Typography>
@@ -101,8 +104,8 @@ const DiagnoseTableRow: React.FC<DiagnoseTableRowProps> = ({
           }}
           sx={{ py: 1 }}
         >
-          <Edit sx={{ mr: 1 }} />
-          Symptomss
+          <Healing sx={{ mr: 1 }} />
+          Symptoms
         </MenuItem>
 
         <MenuItem

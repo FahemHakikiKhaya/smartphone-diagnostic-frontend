@@ -4,7 +4,6 @@ import useTypingEffect from "@/hooks/useTypingEffect";
 import { useAuth } from "@/provider/AuthProvider";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -48,7 +47,7 @@ export default function HomePage() {
           justifyContent="center"
           alignItems="center"
           textAlign="center"
-          spacing={{ md: 5 }}
+          spacing={{ md: 5, xs: 3 }}
           height="100vh"
         >
           <Typography
@@ -57,8 +56,8 @@ export default function HomePage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
             sx={{
-              fontSize: { md: "59px", xs: "20px" },
-              fontWeight: { md: 800 },
+              fontSize: { md: "59px", xs: "30px" },
+              fontWeight: { md: 800, xs: 800 },
             }}
           >
             D{displayedText}
@@ -79,7 +78,7 @@ export default function HomePage() {
             that uses a series of guided questions to help you identify the
             exact issue with your phone.
           </Typography>
-          <Stack direction="row" spacing={{ md: 2 }}>
+          <Stack direction="row" spacing={{ md: 2, xs: 1 }}>
             <Button
               variant="contained"
               color="primary"
@@ -88,12 +87,7 @@ export default function HomePage() {
             >
               Get Started
             </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="large"
-              onClick={() => toast.success("test")}
-            >
+            <Button variant="outlined" color="primary" size="large">
               About Us
             </Button>
           </Stack>

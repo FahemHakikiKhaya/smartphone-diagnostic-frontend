@@ -6,14 +6,13 @@ import {
   Container,
   Menu,
   MenuItem,
-  Popover,
   Stack,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/provider/AuthProvider";
 
 function stringAvatar(name: string) {
@@ -29,6 +28,7 @@ const NavigationBar = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const path = usePathname();
   const { authenticate, user, logout } = useAuth();
+  const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -124,7 +124,16 @@ const NavigationBar = () => {
             horizontal: "center",
           }}
         >
-          <MenuItem onClick={handleClose}>Dashboard</MenuItem>
+          {user?.isAdmin && (
+            <MenuItem
+              onClick={() => {
+                router.push("/admin");
+                handleClose();
+              }}
+            >
+              Dashboard
+            </MenuItem>
+          )}
           <MenuItem onClick={handleClose}>Results</MenuItem>
           <MenuItem
             onClick={() => {

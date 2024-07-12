@@ -65,39 +65,40 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
-  const { getFieldProps, touched, errors, handleSubmit } = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-      isRegister: authModal.type === "Register" || false,
-    },
-    validationSchema: Yup.object().shape({
-      username: Yup.string().when("isRegister", ([isRegister], schema) => {
-        return isRegister
-          ? schema.required("Username is required")
-          : schema.notRequired();
+  const { getFieldProps, touched, errors, handleSubmit, isSubmitting } =
+    useFormik({
+      enableReinitialize: true,
+      initialValues: {
+        username: "",
+        email: "",
+        password: "",
+        isRegister: authModal.type === "Register" || false,
+      },
+      validationSchema: Yup.object().shape({
+        username: Yup.string().when("isRegister", ([isRegister], schema) => {
+          return isRegister
+            ? schema.required("Username is required")
+            : schema.notRequired();
+        }),
+        email: Yup.string().required("Email is required"),
+        password: Yup.string().required("Password is required"),
       }),
-      email: Yup.string().required("Email is required"),
-      password: Yup.string().required("Password is required"),
-    }),
-    onSubmit: async (values) => {
-      if (authModal.type === "Register") {
-        await register({
-          username: values.username,
-          email: values.email,
-          password: values.password,
-        });
-      }
-      if (authModal.type === "Login") {
-        await login({
-          email: values.email,
-          password: values.password,
-        });
-      }
-    },
-  });
+      onSubmit: async (values) => {
+        if (authModal.type === "Register") {
+          await register({
+            username: values.username,
+            email: values.email,
+            password: values.password,
+          });
+        }
+        if (authModal.type === "Login") {
+          await login({
+            email: values.email,
+            password: values.password,
+          });
+        }
+      },
+    });
 
   const authenticate = (type: "Register" | "Login") => {
     setAuthModal({ opened: true, type });
@@ -125,7 +126,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       >
         <DialogTitle>{authModal.type}</DialogTitle>
         <DialogContent>
-          <Stack spacing={{ md: 2 }}>
+          <Stack spacing={{ md: 2, xs: 2 }}>
             {authModal.type === "Register" && (
               <TextField
                 error={Boolean(touched.username && errors.username)}
@@ -139,6 +140,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
               helperText={errors.email}
               placeholder="Email"
               {...getFieldProps("email")}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
             <TextField
               error={Boolean(touched.password && errors.password)}
@@ -146,17 +148,24 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
               placeholder="Password"
               type="password"
               {...getFieldProps("password")}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
           </Stack>
           <Stack direction="row" justifyContent="end" spacing={1} mt={3}>
-            <LoadingButton variant="outlined" size="large" color="primary">
+            <LoadingButton
+              variant="outlined"
+              size="large"
+              color="primary"
+              onClick={() => setAuthModal({ ...authModal, opened: false })}
+            >
               Cancel
             </LoadingButton>
             <LoadingButton
               variant="contained"
               size="large"
               color="primary"
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
+              loading={isSubmitting}
             >
               Submit
             </LoadingButton>

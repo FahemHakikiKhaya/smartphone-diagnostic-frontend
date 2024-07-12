@@ -53,6 +53,7 @@ const UpsertDiagnoseModal: FC<UpsertDiagnoseModalProps> = ({
       initialValues={{
         code: initialValues?.code || "",
         name: initialValues?.name || "",
+        description: initialValues?.description || "",
         solution: initialValues?.solution || "",
       }}
       validationSchema={Yup.object({
@@ -83,6 +84,13 @@ const UpsertDiagnoseModal: FC<UpsertDiagnoseModalProps> = ({
                 label="Name"
                 error={Boolean(touched.name && errors.name)}
                 helperText={errors.name}
+              />
+              <TextField
+                {...getFieldProps("description")}
+                variant="standard"
+                label="Description"
+                error={Boolean(touched.description && errors.description)}
+                helperText={errors.description}
               />
               <TextField
                 {...getFieldProps("solution")}

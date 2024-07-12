@@ -139,6 +139,7 @@ export default function AdminDiagnosePage() {
               headLabel={[
                 { id: "code", label: "Code" },
                 { id: "name", label: "Name" },
+                { id: "description", label: "Description" },
                 { id: "solution", label: "Solution" },
                 { id: "action", label: "Action", align: "right" },
               ]}
