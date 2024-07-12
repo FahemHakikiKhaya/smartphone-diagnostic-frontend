@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useCreateDiagnoseMutation,
-  useUpsertDiagnoseMutation,
-} from "@/features/diagnose/api/useUpsertDiagnoseMutation";
+import { useUpsertDiagnoseMutation } from "@/features/diagnose/api/useUpsertDiagnoseMutation";
 import { getDiagnosesQuerykey } from "@/features/diagnose/api/useGetDiagnosesQuery";
 import { LoadingButton } from "@mui/lab";
 import {

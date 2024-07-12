@@ -1,7 +1,7 @@
 import { TableRow, Checkbox, TableCell, TableHead } from "@mui/material";
 
 interface HeadLabel {
-  id: number;
+  id: string;
   label: string;
   align?: "left" | "right" | "center";
   width?: number | string;

@@ -83,17 +83,6 @@ const DiagnoseSymptomsTableRow: React.FC<DiagnoseSymptomsTableRowProps> = ({
       >
         <MenuItem
           onClick={() => {
-            setUpsertModal({ opened: true, selectedId: id });
-            handleCloseMenu();
-          }}
-          sx={{ py: 1 }}
-        >
-          <Edit sx={{ mr: 1 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
             deleteDiagnoseSymptoms([id]);
             handleCloseMenu();
           }}

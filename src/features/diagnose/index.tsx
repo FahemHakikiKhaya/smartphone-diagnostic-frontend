@@ -53,7 +53,7 @@ export default function DiagnosePage() {
         currentIndex: 0,
       }}
       onSubmit={async (values, { setFieldValue }) => {
-        const newAnswers = values.answers;
+        const newAnswers: string[] = values.answers;
         newAnswers[values.currentIndex] = values.currentAnswer;
         setFieldValue("answers", newAnswers);
         setFieldValue(
