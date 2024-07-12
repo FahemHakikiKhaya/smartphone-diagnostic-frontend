@@ -30,9 +30,9 @@ const NavigationBar = () => {
   const { authenticate, user, logout } = useAuth();
   const router = useRouter();
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -88,7 +88,10 @@ const NavigationBar = () => {
             </Stack>
           </Link>
           {user ? (
-            <Avatar {...stringAvatar(user.username)} onClick={handleClick} />
+            <Avatar
+              {...stringAvatar(user.username)}
+              onClick={(e) => handleClick(e)}
+            />
           ) : (
             <Stack direction="row" spacing={1}>
               <Button
