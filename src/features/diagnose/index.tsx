@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import useGetSymptomsQuery from "../symptom/api/useGetSymptomsQuery";
@@ -16,7 +23,10 @@ export default function DiagnosePage() {
   const { user } = useAuth();
 
   const {
-    data: { data: questions, meta: { total: totalQuestions = 0 } = {} } = {},
+    data: {
+      data: questions = [],
+      meta: { total: totalQuestions = 0 } = {},
+    } = {},
     isLoading,
   } = useGetSymptomsQuery({
     all: true,
@@ -89,9 +99,11 @@ export default function DiagnosePage() {
               transformOrigin: "0%",
             }}
           />
-          {!isLoading && questions && (
-            <Container>
-              <Stack height="100vh" alignItems="center" justifyContent="center">
+          <Container>
+            <Stack height="100vh" alignItems="center" justifyContent="center">
+              {isLoading ? (
+                <CircularProgress size="60px" />
+              ) : (
                 <Stack>
                   <Typography
                     fontSize={{ md: "22px" }}
@@ -179,9 +191,9 @@ export default function DiagnosePage() {
                     </LoadingButton>
                   </Stack>
                 </Stack>
-              </Stack>
-            </Container>
-          )}{" "}
+              )}
+            </Stack>
+          </Container>
         </Box>
       )}
     </Formik>
