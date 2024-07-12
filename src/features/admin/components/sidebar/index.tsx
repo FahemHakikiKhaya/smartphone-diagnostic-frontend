@@ -20,17 +20,17 @@ interface NavProps {
 
 const navItemList = [
   {
-    title: "user",
-    path: "/",
+    title: "User Result",
+    path: "/admin/user-result",
     icon: <Person />,
   },
   {
-    title: "diagnose",
+    title: "Diagnose",
     path: "/admin/diagnose",
     icon: <Adb />,
   },
   {
-    title: "symptom",
+    title: "Symptom",
     path: "/admin/symptom",
     icon: <Healing />,
   },

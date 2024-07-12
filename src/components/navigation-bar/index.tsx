@@ -130,14 +130,13 @@ const NavigationBar = () => {
           {user?.isAdmin && (
             <MenuItem
               onClick={() => {
-                router.push("/admin");
+                router.push("/admin/user-result");
                 handleClose();
               }}
             >
               Dashboard
             </MenuItem>
           )}
-          <MenuItem onClick={handleClose}>Results</MenuItem>
           <MenuItem
             onClick={() => {
               logout();

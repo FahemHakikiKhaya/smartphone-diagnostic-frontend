@@ -99,8 +99,6 @@ export default function AdminDiagnosePage() {
     deleteDiagnoses({ ids });
   };
 
-  console.log(data?.meta.total);
-
   return (
     <>
       <Stack
