@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useCreateDiagnoseMutation,
-  useUpsertDiagnoseMutation,
-} from "@/features/diagnose/api/useUpsertDiagnoseMutation";
+import { useUpsertDiagnoseMutation } from "@/features/diagnose/api/useUpsertDiagnoseMutation";
 import { getDiagnosesQuerykey } from "@/features/diagnose/api/useGetDiagnosesQuery";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -59,7 +56,7 @@ const CreateDiagnoseSymptomModal: FC<CreateDiagnoseSymptomModalProps> = ({
   const { enqueueSnackbar } = useSnackbar();
   const { mutateAsync: createDiagnoseSymptom } =
     useCreateDiagnoseSymptomMutation({
-      onError: (error) => {
+      onError: (error: any) => {
         enqueueSnackbar({
           message: error.response.data.message,
           variant: "error",
