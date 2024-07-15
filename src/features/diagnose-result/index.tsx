@@ -93,21 +93,21 @@ const DiagnoseResultPage = ({ id }: { id: number }) => {
             <Grid
               container
               columnSpacing={{ md: 10, xs: 0 }}
-              rowSpacing={{ md: 0, xs: 10 }}
+              rowSpacing={{ md: 0, xs: 5 }}
               direction={{ md: "row", xs: "column" }}
               alignItems="center"
               pt={{ md: 0, xs: 10 }}
             >
               <Grid item md={7} xs={12}>
                 <Typography
-                  fontSize={50}
+                  fontSize={{ md: 50, xs: 30 }}
                   fontWeight="bold"
                   color="text.disabled"
-                  mb={4}
+                  mb={{ md: 4, xs: 2 }}
                 >
                   Your Smarphone has <br />
                   <Typography
-                    fontSize={50}
+                    fontSize={{ md: 50, xs: 30 }}
                     mt={6}
                     fontWeight="bold"
                     component="span"
@@ -167,7 +167,11 @@ const DiagnoseResultPage = ({ id }: { id: number }) => {
                     size={300}
                     fontSize={50}
                   />
-                  <Typography fontSize={30} fontWeight="bold" mt={5}>
+                  <Typography
+                    fontSize={30}
+                    fontWeight="bold"
+                    mt={{ md: 5, xs: 2 }}
+                  >
                     Certainty Level
                   </Typography>
                 </Stack>

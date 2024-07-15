@@ -2,10 +2,18 @@
 
 import useTypingEffect from "@/hooks/useTypingEffect";
 import { useAuth } from "@/provider/AuthProvider";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useTheme } from "@mui/material/styles";
 
 const gridBackground = {
   backgroundImage:
@@ -20,6 +28,8 @@ export default function HomePage() {
   const displayedText = useTypingEffect(text);
   const { authenticate, user } = useAuth();
   const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const onClickGetStarted = () => {
     if (user) {
@@ -78,16 +88,20 @@ export default function HomePage() {
             that uses a series of guided questions to help you identify the
             exact issue with your phone.
           </Typography>
-          <Stack direction="row" spacing={{ md: 2, xs: 1 }}>
+          <Stack direction="row" spacing={{ md: 2, xs: 2 }}>
             <Button
               variant="contained"
               color="primary"
-              size="large"
+              size={isMobile ? "medium" : "large"}
               onClick={onClickGetStarted}
             >
               Get Started
             </Button>
-            <Button variant="outlined" color="primary" size="large">
+            <Button
+              variant="outlined"
+              color="primary"
+              size={isMobile ? "medium" : "large"}
+            >
               About Us
             </Button>
           </Stack>

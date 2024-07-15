@@ -1,6 +1,5 @@
 "use client";
 
-import { Password } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
   Dialog,
@@ -8,6 +7,7 @@ import {
   DialogTitle,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import * as Yup from "yup";
 import { Formik, useFormik } from "formik";
@@ -22,6 +22,7 @@ import {
 import { useRegisterMutation } from "@/features/auth/api/useRegisterMutation";
 import { useLoginMutation } from "@/features/auth/api/useLoginMutation";
 import { User } from "@/features/user/type";
+import CryptoJS from "crypto-js";
 
 interface AuthContextType {
   authenticate: (type: "Register" | "Login") => void;
@@ -42,22 +43,6 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const [user, setUser] = useState<User | null>(null);
 
-  const { mutateAsync: register } = useRegisterMutation({
-    onSuccess: (data) => {
-      localStorage.setItem("auth-detective", JSON.stringify(data));
-      setUser(data);
-      setAuthModal({ ...authModal, opened: false });
-    },
-  });
-
-  const { mutateAsync: login } = useLoginMutation({
-    onSuccess: (data) => {
-      localStorage.setItem("auth-detective", JSON.stringify(data));
-      setUser(data);
-      setAuthModal({ ...authModal, opened: false });
-    },
-  });
-
   useEffect(() => {
     const storedUser = localStorage.getItem("auth-detective");
     if (storedUser) {
@@ -65,40 +50,72 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
-  const { getFieldProps, touched, errors, handleSubmit, isSubmitting } =
-    useFormik({
-      enableReinitialize: true,
-      initialValues: {
-        username: "",
-        email: "",
-        password: "",
-        isRegister: authModal.type === "Register" || false,
-      },
-      validationSchema: Yup.object().shape({
-        username: Yup.string().when("isRegister", ([isRegister], schema) => {
-          return isRegister
-            ? schema.required("Username is required")
-            : schema.notRequired();
-        }),
-        email: Yup.string().required("Email is required"),
-        password: Yup.string().required("Password is required"),
+  const {
+    getFieldProps,
+    touched,
+    errors,
+    handleSubmit,
+    isSubmitting,
+    resetForm,
+  } = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      username: "",
+      email: "",
+      password: "",
+      isRegister: authModal.type === "Register" || false,
+    },
+    validationSchema: Yup.object().shape({
+      username: Yup.string().when("isRegister", ([isRegister], schema) => {
+        return isRegister
+          ? schema.required("Username is required")
+          : schema.notRequired();
       }),
-      onSubmit: async (values) => {
-        if (authModal.type === "Register") {
-          await register({
-            username: values.username,
-            email: values.email,
-            password: values.password,
-          });
-        }
-        if (authModal.type === "Login") {
-          await login({
-            email: values.email,
-            password: values.password,
-          });
-        }
-      },
-    });
+      email: Yup.string().required("Email is required"),
+      password: Yup.string().required("Password is required"),
+    }),
+    onSubmit: async (values) => {
+      const encryptedPassword = CryptoJS.AES.encrypt(
+        values.password,
+        process.env.NEXT_PUBLIC_SECRET_KEY as string
+      ).toString();
+
+      if (authModal.type === "Register") {
+        await register({
+          username: values.username,
+          email: values.email,
+          password: encryptedPassword,
+        });
+      }
+      if (authModal.type === "Login") {
+        await login({
+          email: values.email,
+          password: encryptedPassword,
+        });
+      }
+    },
+  });
+
+  const handleCloseAuthModal = () => {
+    setAuthModal({ ...authModal, opened: false });
+    resetForm();
+  };
+
+  const { mutateAsync: register } = useRegisterMutation({
+    onSuccess: (data) => {
+      localStorage.setItem("auth-detective", JSON.stringify(data));
+      setUser(data);
+      handleCloseAuthModal();
+    },
+  });
+
+  const { mutateAsync: login } = useLoginMutation({
+    onSuccess: (data) => {
+      localStorage.setItem("auth-detective", JSON.stringify(data));
+      setUser(data);
+      handleCloseAuthModal();
+    },
+  });
 
   const authenticate = (type: "Register" | "Login") => {
     setAuthModal({ opened: true, type });
@@ -113,7 +130,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     <AuthContext.Provider value={{ authenticate, user, logout }}>
       <Dialog
         open={authModal.opened}
-        onClose={() => setAuthModal({ ...authModal, opened: false })}
+        onClose={() => {
+          handleCloseAuthModal();
+        }}
         PaperProps={{
           sx: {
             backgroundColor: "primary",
@@ -150,13 +169,27 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
               {...getFieldProps("password")}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
+            {authModal.type === "Login" && (
+              <Typography textAlign="center">
+                New here?{" "}
+                <Typography
+                  component="span"
+                  sx={{ textDecoration: "underline", cursor: "pointer" }}
+                  onClick={() =>
+                    setAuthModal({ ...authModal, type: "Register" })
+                  }
+                >
+                  Click here to join us
+                </Typography>
+              </Typography>
+            )}
           </Stack>
-          <Stack direction="row" justifyContent="end" spacing={1} mt={3}>
+          <Stack direction="row" justifyContent="end" spacing={1} mt={4}>
             <LoadingButton
               variant="outlined"
               size="large"
               color="primary"
-              onClick={() => setAuthModal({ ...authModal, opened: false })}
+              onClick={() => handleCloseAuthModal()}
             >
               Cancel
             </LoadingButton>

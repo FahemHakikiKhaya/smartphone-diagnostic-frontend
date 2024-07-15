@@ -8,7 +8,9 @@ import {
   MenuItem,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
 import Link from "next/link";
@@ -29,6 +31,8 @@ const NavigationBar = () => {
   const path = usePathname();
   const { authenticate, user, logout } = useAuth();
   const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
@@ -87,10 +91,16 @@ const NavigationBar = () => {
               </Typography>
             </Stack>
           </Link>
-          {user ? (
+          {user || isMobile ? (
             <Avatar
-              {...stringAvatar(user.username)}
-              onClick={(e) => handleClick(e)}
+              {...(user && stringAvatar(user.username))}
+              onClick={(e) => {
+                if (user) {
+                  handleClick(e);
+                } else {
+                  authenticate("Login");
+                }
+              }}
             />
           ) : (
             <Stack direction="row" spacing={1}>
