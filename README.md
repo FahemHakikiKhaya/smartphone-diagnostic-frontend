@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📱 Smartphone Diagnostic App
 
-## Getting Started
+A smart application that diagnoses smartphone issues using forward chaining and certainty factors through guided questions regarding symptoms.
 
-First, run the development server:
+## 🌟 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Admin Features
+- **CRUD Operations**: Manage diagnoses and symptoms with ease.
+- **User Diagnosis Results**: View user diagnoses and their history.
+- **Solutions**: Add solutions to every diagnostic for user reference.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### User Features
+- **Authentication**: Secure user authentication process.
+- **Diagnosis Tool**: Diagnose your smartphone based on symptoms.
+- **Results & Solutions**: View diagnostic results with corresponding solutions and certainty factors.
+- **Answer History**: Keep track of past responses for reference.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Additional Features
+- **Animations**: Enhanced user experience with animations using Framer Motion.
+- **Material UI**: A responsive and modern UI design.
+- **React Query**: Efficient data fetching and caching for structured API calls.
+- **Server-Side Rendering**: Admin CRUD and list functionalities with pagination, filtering, and searching.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## ⚙️ Tech Stack
+- **Frontend**: React.js, Next.js
+- **UI Framework**: Material UI
+- **State Management**: React Query
+- **Animation**: Framer Motion
+- **Backend**: (Specify your backend if applicable, e.g., Node.js, Express, etc.)
+- **Database**: (Specify your database if applicable, e.g., MongoDB, PostgreSQL, etc.)
 
-## Learn More
+## 🚧 Installation & Setup
 
-To learn more about Next.js, take a look at the following resources:
+To run this project locally:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   ```bash
+   git clone https://github.com/FahemHakikiKhaya/smartphone-diagnostic-frontend
+1. Install dependency:
 
-## Deploy on Vercel
+   ```bash
+   npm install
+1. Run the development server:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+   npm run dev
