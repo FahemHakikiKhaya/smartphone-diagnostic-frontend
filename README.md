@@ -8,6 +8,8 @@ A smart application that diagnoses smartphone issues using forward chaining and 
 - **CRUD Operations**: Manage diagnoses and symptoms with ease.
 - **User Diagnosis Results**: View user diagnoses and their history.
 - **Solutions**: Add solutions to every diagnostic for user reference.
+- **Server-Side**: Pagination, filtering, and searching.
+
 
 ### User Features
 - **Authentication**: Secure user authentication process.
@@ -15,11 +17,11 @@ A smart application that diagnoses smartphone issues using forward chaining and 
 - **Results & Solutions**: View diagnostic results with corresponding solutions and certainty factors.
 - **Answer History**: Keep track of past responses for reference.
 
+
 ### Additional Features
 - **Animations**: Enhanced user experience with animations using Framer Motion.
 - **Material UI**: A responsive and modern UI design.
 - **React Query**: Efficient data fetching and caching for structured API calls.
-- **Server-Side Rendering**: Admin CRUD and list functionalities with pagination, filtering, and searching.
 
 ## ⚙️ Tech Stack
 - **Frontend**: React.js, Next.js
